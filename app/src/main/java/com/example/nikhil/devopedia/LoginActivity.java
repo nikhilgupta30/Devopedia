@@ -15,10 +15,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.nikhil.devopedia.Loaders.CustomLoaderAuth;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
         LoaderManager.LoaderCallbacks<String>{

@@ -1,4 +1,4 @@
-package com.example.nikhil.devopedia;
+package com.example.nikhil.devopedia.Fragments;
 
 import android.app.LoaderManager;
 import android.content.Context;
@@ -13,9 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.GridView;
 import android.widget.Toast;
+
+import com.example.nikhil.devopedia.Adapters.CatalogAdapter;
+import com.example.nikhil.devopedia.Items.CatalogItem;
+import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
+import com.example.nikhil.devopedia.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,11 +30,11 @@ import java.util.ArrayList;
 /**
  * fragment for my-courses
  */
-public class MyCoursesFragment extends Fragment {
+public class CatalogFragment extends Fragment {
 
     // constants
-    public static final String REQUEST_URL_DEVOPEDIA = "http://devopedia.herokuapp.com/api/student/my-courses";
-    private static final int LOADER_ID = 1;
+    public static final String REQUEST_URL_DEVOPEDIA = "http://devopedia.herokuapp.com/api/student/courses";
+    private static final int LOADER_ID = 3;
 
     // context of main activity
     private Context context;
@@ -42,19 +46,19 @@ public class MyCoursesFragment extends Fragment {
     private String apiData;
 
     // object to store data
-    private ArrayList<MyCourseItem> myCourseItems;
+    private ArrayList<CatalogItem> catalogItems;
 
     // custom adapter
-    private MyCourseAdapter adapter;
+    private CatalogAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_my_courses_and_cart,container,false);
+        rootView = inflater.inflate(R.layout.fragment_catalog,container,false);
 
         context = getActivity();
 
-        myCourseItems = new ArrayList<>();
+        catalogItems = new ArrayList<>();
 
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -63,7 +67,7 @@ public class MyCoursesFragment extends Fragment {
 
         if (networkInfo != null && networkInfo.isConnected()) {
 
-            getLoaderManager().initLoader(LOADER_ID,null,myCoursesApi);
+            getLoaderManager().initLoader(LOADER_ID,null,catalogApi);
 
         }
         else{
@@ -72,9 +76,9 @@ public class MyCoursesFragment extends Fragment {
 
         }
 
-        adapter = new MyCourseAdapter(getActivity(),myCourseItems);
-        ListView listView = (ListView) rootView.findViewById(R.id.course_list);
-        listView.setAdapter(adapter);
+        adapter = new CatalogAdapter(getActivity(),catalogItems);
+        GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
+        gridview.setAdapter(adapter);
 
         return rootView;
     }
@@ -85,13 +89,13 @@ public class MyCoursesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // setting title of action bar according to fragment
-        getActivity().setTitle("My Courses");
+        getActivity().setTitle("Course Catalog");
     }
 
     /**
      *  loader for retrieving data
      */
-    private LoaderManager.LoaderCallbacks<String> myCoursesApi
+    private LoaderManager.LoaderCallbacks<String> catalogApi
             = new LoaderManager.LoaderCallbacks<String>(){
 
         public Loader<String> onCreateLoader(int i, Bundle bundle) {
@@ -118,15 +122,21 @@ public class MyCoursesFragment extends Fragment {
 
             for(int i=0; i<array.length(); i++){
                 JSONObject current = array.getJSONObject(i);
-                MyCourseItem obj = new MyCourseItem(
-                        current.getString("_id"),
-                        current.getString("title"),
-                        current.getString("introduction"),
-                        current.getString("img"),
-                        current.getString("video")
-                        );
 
-                myCourseItems.add(obj);
+                String currStatus = current.getString("approved");
+
+                if( currStatus.equals("true") ) {
+                    CatalogItem obj = new CatalogItem(
+                            current.getString("_id"),
+                            current.getString("title"),
+                            current.getString("introduction"),
+                            current.getString("img"),
+                            current.getString("video"),
+                            current.getInt("price")
+                    );
+
+                    catalogItems.add(obj);
+                }
             }
 
             adapter.notifyDataSetChanged();
@@ -143,4 +153,5 @@ public class MyCoursesFragment extends Fragment {
         super.onPause();
         adapter.clear();
     }
+
 }

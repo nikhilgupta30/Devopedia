@@ -1,4 +1,4 @@
-package com.example.nikhil.devopedia;
+package com.example.nikhil.devopedia.Fragments;
 
 import android.app.LoaderManager;
 import android.content.Context;
@@ -14,8 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.nikhil.devopedia.Adapters.CartAdapter;
+import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
+import com.example.nikhil.devopedia.Items.CartItem;
+import com.example.nikhil.devopedia.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

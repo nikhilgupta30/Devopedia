@@ -1,34 +1,24 @@
-package com.example.nikhil.devopedia;
+package com.example.nikhil.devopedia.Requests;
 
 import android.util.Log;
 
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
- * main class for user authentication
+ * main class for retrieving user data
  */
-public class UserAuthRequest {
+public class UserDataRequest {
 
-    private static final String LOG_TAG = UserAuthRequest.class.getSimpleName();
+    private static final String LOG_TAG = UserDataRequest.class.getSimpleName();
 
-    private UserAuthRequest(){
+    private UserDataRequest(){
 
     }
 
@@ -48,10 +38,6 @@ public class UserAuthRequest {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        if( jsonResponse == null ){
-            jsonResponse = "false";
-        }
-        Log.v(LOG_TAG,jsonResponse);
         return jsonResponse;
 
     }
@@ -86,27 +72,21 @@ public class UserAuthRequest {
                 line = reader.readLine();
             }
         }
+
         return output.toString();
 
     }
 
     /**
-     * function fot http request
+     * function to make main httpRequest
      */
     private static String makeHttpRequest(URL url) throws IOException {
 
-        // hash map for storing user entered email and password
-        JSONObject postDataParams = new JSONObject();
+        String jsonResponse = "";
+        String token_value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZDRmMGQxM2Rh" +
+                "YmNkMDAxNGQ2Nzc4MiIsImlhdCI6MTUzMDc4MDY5MX0.C-9Vs4iDhrowg69Eh8N0BXOql-7rsf" +
+                "54YgciGGtE1dw";
 
-        try {
-            postDataParams.put("email", "nikhilgupta311@gmail.com");
-            postDataParams.put("password", "123456789");
-        }
-        catch (Exception e){
-            Log.e(LOG_TAG,"exception occured : " + e);
-        }
-
-        String jsonResponse = null;
 
         // If the URL is null, then return early.
         if (url == null) {
@@ -118,38 +98,24 @@ public class UserAuthRequest {
         InputStream inputStream = null;
 
         try {
+            Log.v(LOG_TAG,"executed");
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(10000 /* milliseconds */);
             urlConnection.setConnectTimeout(15000 /* milliseconds */);
-            urlConnection.setRequestMethod("POST");
-
+            urlConnection.setRequestProperty("x-access-token",token_value);
+            urlConnection.setRequestMethod("GET");
             urlConnection.setDoInput(true);
-            urlConnection.setDoOutput(true);
-
-            OutputStream os = urlConnection.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            try {
-                writer.write(getPostDataString(postDataParams));
-            }
-            catch (Exception e){
-                Log.e(LOG_TAG,"exception occurred : " + e);
-            }
-
-            writer.flush();
-            writer.close();
-            os.close();
 
             if(urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
                 Log.v(LOG_TAG,"http is ok");
 
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
-
-            }else {
+                Log.v(LOG_TAG, "json response: " + jsonResponse);
+            }
+            else{
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
-
             }
 
         }catch (IOException e){
@@ -159,7 +125,6 @@ public class UserAuthRequest {
         }finally {
 
             if (urlConnection != null) {
-                // disconnect
                 urlConnection.disconnect();
             }
             if (inputStream != null) {
@@ -171,35 +136,6 @@ public class UserAuthRequest {
         }
 
         return jsonResponse;
-    }
-
-    /**
-     * helper function for parameters of api request
-     */
-
-    private static String getPostDataString(JSONObject params) throws Exception {
-
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-
-        Iterator<String> itr = params.keys();
-
-        while(itr.hasNext()){
-
-            String key= itr.next();
-            Object value = params.get(key);
-
-            if (first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(key, "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-
-        }
-        return result.toString();
     }
 
 }
