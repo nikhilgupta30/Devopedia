@@ -2,6 +2,7 @@ package com.example.nikhil.devopedia.Fragments;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -13,12 +14,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Adapters.MyCourseAdapter;
 import com.example.nikhil.devopedia.Items.MyCourseItem;
 import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
+import com.example.nikhil.devopedia.LoginActivity;
+import com.example.nikhil.devopedia.MainActivity;
+import com.example.nikhil.devopedia.MyCourseVideoActivity;
 import com.example.nikhil.devopedia.R;
 
 import org.json.JSONArray;
@@ -33,7 +38,8 @@ import java.util.ArrayList;
 public class MyCoursesFragment extends Fragment {
 
     // constants
-    public static final String REQUEST_URL_DEVOPEDIA = "http://devopedia.herokuapp.com/api/student/my-courses";
+    public static final String REQUEST_URL_DEVOPEDIA =
+            "http://devopedia.herokuapp.com/api/student/my-courses";
     private static final int LOADER_ID = 1;
 
     // context of main activity
@@ -79,6 +85,14 @@ public class MyCoursesFragment extends Fragment {
         adapter = new MyCourseAdapter(getActivity(),myCourseItems);
         ListView listView = (ListView) rootView.findViewById(R.id.course_list);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), MyCourseVideoActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }

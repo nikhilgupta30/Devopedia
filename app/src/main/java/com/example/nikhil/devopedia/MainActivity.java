@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.nikhil.devopedia.Fragments.CatalogFragment;
+import com.example.nikhil.devopedia.Fragments.MyCoursesFragment;
 
 /**
  * main class of App
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         // todo : calling fragment testing
         fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.contentFrame,new CatalogFragment())
+                .replace(R.id.contentFrame,new MyCoursesFragment())
                 .commit();
 
     }
