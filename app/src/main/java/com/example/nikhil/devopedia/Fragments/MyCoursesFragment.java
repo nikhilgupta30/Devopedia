@@ -40,7 +40,7 @@ public class MyCoursesFragment extends Fragment {
 
     // constants
     public static final String REQUEST_URL_DEVOPEDIA = Constants.URL_MY_COURSES;
-            ;
+
     private static final int LOADER_ID = 1;
 
     // context of main activity
@@ -92,7 +92,11 @@ public class MyCoursesFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MyCourseItem currCourse = myCourseItems.get(position);
+
                 Intent intent = new Intent(getActivity(), MyCourseVideoActivity.class);
+                intent.putExtra("CurrCourseId",currCourse.getCourseId());
+                intent.putExtra("ActionBarTitle",currCourse.getTitle());
                 startActivity(intent);
             }
         });

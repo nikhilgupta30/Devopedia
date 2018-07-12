@@ -1,16 +1,29 @@
 package com.example.nikhil.devopedia;
 
+import android.app.LoaderManager;
+import android.content.Context;
+import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Constants.Constants;
+import com.example.nikhil.devopedia.Items.LessonItem;
+import com.example.nikhil.devopedia.Items.MyCourseItem;
+import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,16 +43,112 @@ public class MyCourseVideoActivity extends AppCompatActivity {
     //youtube player to play video when new video selected
     private YouTubePlayer youTubePlayer;
 
+    // string that store data from api
+    private String apiData;
+
+    //object to store data
+    private ArrayList<LessonItem> lessonItems;
+
+    //constants
+    public static String REQUEST_URL_DEVOPEDIA = Constants.URL_MY_COURSES_ITEM;
+    public static final int LOADER_ID = 5;
+    public String currCourseId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_course_video);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        generateDummyVideoList();
-        initializeYoutubePlayer();
-        setUpRecyclerView();
-        populateRecyclerView();
+
+        currCourseId = getIntent().getStringExtra("CurrCourseId");
+        REQUEST_URL_DEVOPEDIA = REQUEST_URL_DEVOPEDIA + currCourseId;
+
+        final String actionBarTitle = getIntent().getStringExtra("ActionBarTitle");
+        getSupportActionBar().setTitle(actionBarTitle);
+
+        lessonItems = new ArrayList<>();
+
+        // initiating loader for api
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+
+            getLoaderManager().initLoader(LOADER_ID,null,lessonApi);
+
+        }
+        else{
+
+            Toast.makeText(this,"check your internet connection",Toast.LENGTH_SHORT).show();
+
+        }
+
+
     }
+
+    /**
+     *  loader for retrieving data
+     */
+    private LoaderManager.LoaderCallbacks<String> lessonApi
+            = new LoaderManager.LoaderCallbacks<String>(){
+
+        public Loader<String> onCreateLoader(int i, Bundle bundle) {
+            return new CustomLoaderData(MyCourseVideoActivity.this,REQUEST_URL_DEVOPEDIA);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<String> loader, String data) {
+            apiData = data;
+            handleUI();
+
+            // generating video ids from data
+            generateVideoList();
+
+            // initialize video player
+            initializeYoutubePlayer();
+
+            // recycler view
+            setUpRecyclerView();
+            populateRecyclerView();
+        }
+
+        @Override
+        public void onLoaderReset(Loader<String> loader) { }
+    };
+
+    private void handleUI(){
+        extractFeatureFromJson();
+    }
+
+    /**
+     * utility function to extract features from incoming json file
+     */
+    private void extractFeatureFromJson(){
+        try {
+            JSONObject base = new JSONObject(apiData);
+            JSONArray array = base.getJSONArray("lessons");
+
+            for(int i=0; i<array.length(); i++){
+                JSONObject current = array.getJSONObject(i);
+                LessonItem obj = new LessonItem(
+                        current.getString("_id"),
+                        current.getString("title"),
+                        current.getString("description"),
+                        current.getString("img"),
+                        current.getString("video")
+                );
+
+                lessonItems.add(obj);
+            }
+
+        }
+        catch (JSONException e){
+            Log.e("MyCourseFragment","Problem parsing data from api",e);
+        }
+    }
+
 
     /**
      * initialize youtube player via Fragment and get instance of YoutubePlayer
@@ -64,7 +173,9 @@ public class MyCourseVideoActivity extends AppCompatActivity {
                     youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
 
                     //cue the 1st video by default
-                    youTubePlayer.cueVideo(youtubeVideoArrayList.get(0));
+                    if(youtubeVideoArrayList.size()>0){
+                        youTubePlayer.cueVideo(youtubeVideoArrayList.get(0));
+                    }
                 }
             }
 
@@ -120,14 +231,16 @@ public class MyCourseVideoActivity extends AppCompatActivity {
     /**
      * method to generate dummy array list of videos
      */
-    private void generateDummyVideoList() {
+    private void generateVideoList() {
         youtubeVideoArrayList = new ArrayList<>();
 
-        //get the video id array from strings.xml
-        String[] videoIDArray = getResources().getStringArray(R.array.video_id_array);
-
         //add all videos to array list
-        Collections.addAll(youtubeVideoArrayList, videoIDArray);
+        for(int i=0; i<lessonItems.size(); i++){
+            String tempString = lessonItems.get(i).getVideoUrl();
+            Log.v("video ids",tempString);
+            tempString = tempString.substring(Constants.VIDEO_EMBED.length());
+            youtubeVideoArrayList.add(tempString);
+        }
 
     }
 
