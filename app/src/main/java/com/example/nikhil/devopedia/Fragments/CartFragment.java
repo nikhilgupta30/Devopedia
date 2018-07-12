@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Adapters.CartAdapter;
+import com.example.nikhil.devopedia.Constants.Constants;
 import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
 import com.example.nikhil.devopedia.Items.CartItem;
 import com.example.nikhil.devopedia.R;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
  */
 public class CartFragment extends Fragment {
     /// constants
-    public static final String REQUEST_URL_DEVOPEDIA = "http://devopedia.herokuapp.com/api/student/cart";
+    public static final String REQUEST_URL_DEVOPEDIA = Constants.URL_CART;
     private static final int LOADER_ID = 2;
 
     // context of main activity
@@ -60,6 +61,7 @@ public class CartFragment extends Fragment {
 
         cartItems = new ArrayList<>();
 
+        // initiating loader for api
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -76,6 +78,7 @@ public class CartFragment extends Fragment {
 
         }
 
+        // setting up adapter
         adapter = new CartAdapter(getActivity(),cartItems);
         ListView listView = (ListView) rootView.findViewById(R.id.course_list);
         listView.setAdapter(adapter);
@@ -116,6 +119,9 @@ public class CartFragment extends Fragment {
         extractFeatureFromJson();
     }
 
+    /**
+    * utility function to extract features from incoming json file
+     */
     private void extractFeatureFromJson(){
         try {
             JSONObject base = new JSONObject(apiData);

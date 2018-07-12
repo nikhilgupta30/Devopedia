@@ -17,6 +17,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Adapters.CatalogAdapter;
+import com.example.nikhil.devopedia.Constants.Constants;
 import com.example.nikhil.devopedia.Items.CatalogItem;
 import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
 import com.example.nikhil.devopedia.R;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 public class CatalogFragment extends Fragment {
 
     // constants
-    public static final String REQUEST_URL_DEVOPEDIA = "http://devopedia.herokuapp.com/api/student/courses";
+    public static final String REQUEST_URL_DEVOPEDIA = Constants.URL_CATALOG;
     private static final int LOADER_ID = 3;
 
     // context of main activity
@@ -60,6 +61,7 @@ public class CatalogFragment extends Fragment {
 
         catalogItems = new ArrayList<>();
 
+        // initiating loader for api
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -76,6 +78,7 @@ public class CatalogFragment extends Fragment {
 
         }
 
+        // setting up adapter
         adapter = new CatalogAdapter(getActivity(),catalogItems);
         GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
         gridview.setAdapter(adapter);
@@ -116,6 +119,9 @@ public class CatalogFragment extends Fragment {
         extractFeatureFromJson();
     }
 
+    /**
+     * utility function to extract features from incoming json file
+     */
     private void extractFeatureFromJson(){
         try {
             JSONArray array = new JSONArray(apiData);
@@ -144,7 +150,7 @@ public class CatalogFragment extends Fragment {
 
         }
         catch (JSONException e){
-            Log.e("MyCourseFragment","Problem parsing data from api",e);
+            Log.e("CatalogFragment","Problem parsing data from api",e);
         }
     }
 

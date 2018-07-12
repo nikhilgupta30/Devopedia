@@ -30,9 +30,6 @@ public class MainActivity extends AppCompatActivity
     private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZDRmMGQxM2RhYmN" +
             "kMDAxNGQ2Nzc4MiIsImlhdCI6MTUzMDc4MDY5MX0.C-9Vs4iDhrowg69Eh8N0BXOql-7rsf54YgciGGtE1dw";
 
-    public static final String REQUEST_URL_DEVOPEDIA = "http://devopedia.herokuapp.com/api/student/courses";
-    private static final int LOADER_ID = 1;
-
     private FragmentManager fragmentManager;
 
     @Override

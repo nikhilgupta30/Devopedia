@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import com.example.nikhil.devopedia.Constants.Constants;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -14,10 +15,14 @@ import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * class for video in my_courses
+ */
 public class MyCourseVideoActivity extends AppCompatActivity {
 
     private static final String TAG = MyCourseVideoActivity.class.getSimpleName();
     private RecyclerView recyclerView;
+
     //youtube player fragment
     private YouTubePlayerSupportFragment youTubePlayerFragment;
     private ArrayList<String> youtubeVideoArrayList;

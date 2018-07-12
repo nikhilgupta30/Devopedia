@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Adapters.MyCourseAdapter;
+import com.example.nikhil.devopedia.Constants.Constants;
 import com.example.nikhil.devopedia.Items.MyCourseItem;
 import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
 import com.example.nikhil.devopedia.LoginActivity;
@@ -38,8 +39,8 @@ import java.util.ArrayList;
 public class MyCoursesFragment extends Fragment {
 
     // constants
-    public static final String REQUEST_URL_DEVOPEDIA =
-            "http://devopedia.herokuapp.com/api/student/my-courses";
+    public static final String REQUEST_URL_DEVOPEDIA = Constants.URL_MY_COURSES;
+            ;
     private static final int LOADER_ID = 1;
 
     // context of main activity
@@ -66,6 +67,7 @@ public class MyCoursesFragment extends Fragment {
 
         myCourseItems = new ArrayList<>();
 
+        // initiating loader for api
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -82,6 +84,7 @@ public class MyCoursesFragment extends Fragment {
 
         }
 
+        // setting up adapter
         adapter = new MyCourseAdapter(getActivity(),myCourseItems);
         ListView listView = (ListView) rootView.findViewById(R.id.course_list);
         listView.setAdapter(adapter);
@@ -130,6 +133,9 @@ public class MyCoursesFragment extends Fragment {
         extractFeatureFromJson();
     }
 
+    /**
+     * utility function to extract features from incoming json file
+     */
     private void extractFeatureFromJson(){
         try {
             JSONArray array = new JSONArray(apiData);
