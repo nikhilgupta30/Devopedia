@@ -243,7 +243,6 @@ public class MyCourseVideoActivity extends AppCompatActivity {
             tempString = tempString.substring(Constants.VIDEO_EMBED.length());
             youtubeVideoArrayList.add(tempString);
         }
-
     }
 
     @Override

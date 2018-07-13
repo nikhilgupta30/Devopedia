@@ -13,6 +13,9 @@
 
     <!-- Todo : Remove this after adding dynamic video links -->
     <string name="thumbnail_image_view_desc">Youtube Video thumbnail image view</string>
+    <string name="title_activity_preview">PreviewActivity</string>
+
+    <string name="about_the_course">About the Course</string>
 
 
 </resources>

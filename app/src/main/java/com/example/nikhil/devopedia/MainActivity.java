@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // fab
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         // todo : calling fragment testing
         fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.contentFrame,new MyCoursesFragment())
+                .replace(R.id.contentFrame,new CatalogFragment())
                 .commit();
 
     }

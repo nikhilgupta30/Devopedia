@@ -1,6 +1,8 @@
 package com.example.nikhil.devopedia.Items;
 
-public class CatalogItem {
+import java.io.Serializable;
+
+public class CatalogItem implements Serializable{
 
     private String courseId;
     private String title;

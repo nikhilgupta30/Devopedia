@@ -2,6 +2,7 @@ package com.example.nikhil.devopedia.Fragments;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.example.nikhil.devopedia.Adapters.CatalogAdapter;
 import com.example.nikhil.devopedia.Constants.Constants;
 import com.example.nikhil.devopedia.Items.CatalogItem;
 import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
+import com.example.nikhil.devopedia.PreviewActivity;
 import com.example.nikhil.devopedia.R;
 
 import org.json.JSONArray;
@@ -82,6 +85,23 @@ public class CatalogFragment extends Fragment {
         adapter = new CatalogAdapter(getActivity(),catalogItems);
         GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
         gridview.setAdapter(adapter);
+
+        // todo : change when all video links are available
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String currVideoUrl = catalogItems.get(position).getVideoUrl();
+                if (currVideoUrl.charAt(0) == 'h'){
+                    Intent intent = new Intent(getActivity(), PreviewActivity.class);
+                    intent.putExtra("serializeData",catalogItems.get(position));
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(context,"video link is not available for this",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         return rootView;
     }
