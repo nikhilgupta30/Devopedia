@@ -1,4 +1,4 @@
-package com.example.nikhil.devopedia;
+package com.example.nikhil.devopedia.Adapters;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.nikhil.devopedia.Constants.Constants;
+import com.example.nikhil.devopedia.R;
+import com.example.nikhil.devopedia.MyCourseVideo.YoutubeViewHolder;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;

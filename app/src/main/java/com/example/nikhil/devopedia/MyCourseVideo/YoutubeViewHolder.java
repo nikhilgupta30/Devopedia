@@ -1,9 +1,10 @@
-package com.example.nikhil.devopedia;
+package com.example.nikhil.devopedia.MyCourseVideo;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.example.nikhil.devopedia.R;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 
 public class YoutubeViewHolder  extends RecyclerView.ViewHolder{

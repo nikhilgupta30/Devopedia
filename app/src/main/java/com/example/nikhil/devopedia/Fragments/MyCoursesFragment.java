@@ -22,9 +22,7 @@ import com.example.nikhil.devopedia.Adapters.MyCourseAdapter;
 import com.example.nikhil.devopedia.Constants.Constants;
 import com.example.nikhil.devopedia.Items.MyCourseItem;
 import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
-import com.example.nikhil.devopedia.LoginActivity;
-import com.example.nikhil.devopedia.MainActivity;
-import com.example.nikhil.devopedia.MyCourseVideoActivity;
+import com.example.nikhil.devopedia.MyCourseVideo.MyCourseVideoActivity;
 import com.example.nikhil.devopedia.R;
 
 import org.json.JSONArray;

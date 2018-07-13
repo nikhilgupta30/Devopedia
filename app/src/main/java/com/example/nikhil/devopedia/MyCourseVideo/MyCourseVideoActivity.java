@@ -1,4 +1,4 @@
-package com.example.nikhil.devopedia;
+package com.example.nikhil.devopedia.MyCourseVideo;
 
 import android.app.LoaderManager;
 import android.content.Context;
@@ -10,13 +10,16 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Constants.Constants;
 import com.example.nikhil.devopedia.Items.LessonItem;
-import com.example.nikhil.devopedia.Items.MyCourseItem;
 import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
+import com.example.nikhil.devopedia.R;
+import com.example.nikhil.devopedia.Adapters.YoutubeVideoAdapter;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -26,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * class for video in my_courses
@@ -250,4 +252,44 @@ public class MyCourseVideoActivity extends AppCompatActivity {
         return true;
     }
 
+    public static class RecyclerViewOnClickListenerMyCourseVideo implements RecyclerView.OnItemTouchListener{
+
+        private OnItemClickListener mListener;
+        private GestureDetector mGestureDetector;
+
+        public interface OnItemClickListener {
+            public void onItemClick(View view, int position);
+        }
+
+        public RecyclerViewOnClickListenerMyCourseVideo(Context context, OnItemClickListener listener) {
+            mListener = listener;
+            mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+            View childView = view.findChildViewUnder(e.getX(), e.getY());
+            if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
+                mListener.onItemClick(childView, view.getChildPosition(childView));
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) {
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+
+
+    }
 }
