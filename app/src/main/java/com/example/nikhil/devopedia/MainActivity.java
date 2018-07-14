@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.nikhil.devopedia.Fragments.CartFragment;
 import com.example.nikhil.devopedia.Fragments.CatalogFragment;
 import com.example.nikhil.devopedia.Fragments.MyCoursesFragment;
 
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity
 
     private FragmentManager fragmentManager;
 
+    private int fragment_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity
         // action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        fragment_id = getIntent().getIntExtra("fragment_id",1);
 
         // fab
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -73,9 +78,21 @@ public class MainActivity extends AppCompatActivity
 
         // todo : calling fragment testing
         fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.contentFrame,new CatalogFragment())
-                .commit();
+        if(fragment_id == 1) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.contentFrame, new CatalogFragment())
+                    .commit();
+        }
+        else if( fragment_id == 2 ){
+            fragmentManager.beginTransaction()
+                    .replace(R.id.contentFrame, new CartFragment())
+                    .commit();
+        }
+        else{
+            fragmentManager.beginTransaction()
+                    .replace(R.id.contentFrame, new MyCoursesFragment())
+                    .commit();
+        }
 
     }
 

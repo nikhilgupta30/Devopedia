@@ -1,5 +1,12 @@
 package com.example.nikhil.devopedia;
 
+import android.app.FragmentManager;
+import android.app.LoaderManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,16 +18,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Constants.Constants;
+import com.example.nikhil.devopedia.Fragments.CartFragment;
+import com.example.nikhil.devopedia.Fragments.CatalogFragment;
 import com.example.nikhil.devopedia.Items.CatalogItem;
+import com.example.nikhil.devopedia.Items.MyCourseItem;
+import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class PreviewActivity extends AppCompatActivity {
 
     private static final String TAG = PreviewActivity.class.getSimpleName();
+
+    // constants
+    public String REQUEST_URL_DEVOPEDIA = Constants.URL_BUY_COURSE;
+
+    private static final int LOADER_ID = 6;
 
     //youtube player fragment
     private YouTubePlayerSupportFragment youTubePlayerFragment;
@@ -56,12 +76,33 @@ public class PreviewActivity extends AppCompatActivity {
         introText = (TextView) findViewById(R.id.intro);
         introText.setText(currItem.getIntro());
 
+        // url updating
+        REQUEST_URL_DEVOPEDIA = REQUEST_URL_DEVOPEDIA + currItem.getCourseId();
+        Log.v("url : ",REQUEST_URL_DEVOPEDIA);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // initiating loader for api
+                ConnectivityManager connMgr = (ConnectivityManager)
+                        getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+                if (networkInfo != null && networkInfo.isConnected()) {
+
+                    getLoaderManager().initLoader(LOADER_ID,null,buyApi);
+
+                }
+                else{
+
+                    Toast.makeText(PreviewActivity.this,
+                            "check your internet connection",Toast.LENGTH_SHORT).show();
+
+                }
+
+
             }
         });
 
@@ -116,6 +157,53 @@ public class PreviewActivity extends AppCompatActivity {
         String videoUrl = currItem.getVideoUrl();
         videoUrl = videoUrl.substring(Constants.VIDEO_EMBED.length());
         youtubeVideoArrayList.add(videoUrl);
+    }
+
+    /**
+     *  loader for retrieving data
+     */
+    private LoaderManager.LoaderCallbacks<String> buyApi
+            = new LoaderManager.LoaderCallbacks<String>(){
+
+        public Loader<String> onCreateLoader(int i, Bundle bundle) {
+            return new CustomLoaderData(PreviewActivity.this,REQUEST_URL_DEVOPEDIA);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<String> loader, String data) {
+
+            handleUi(data);
+
+        }
+
+        @Override
+        public void onLoaderReset(Loader<String> loader) { }
+    };
+
+    private void handleUi(String data){
+
+        Snackbar snackbar;
+
+        if(data.equals("")){
+            snackbar = Snackbar.make(findViewById(R.id.preview_window), "Course Already present in Cart",
+                    Snackbar.LENGTH_LONG).setAction("Action", null);
+        }else{
+            snackbar = Snackbar.make(findViewById(R.id.preview_window), "Course Added to Your Cart",
+                    Snackbar.LENGTH_LONG).setAction("Action", null);
+        }
+        snackbar.setAction("View Cart", new goToCartListener());
+        snackbar.show();
+    }
+
+    public class goToCartListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(PreviewActivity.this,MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("fragment_id",2);
+            startActivity(intent);
+        }
     }
 
     @Override

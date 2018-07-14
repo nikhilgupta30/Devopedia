@@ -92,8 +92,9 @@ public class CatalogFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String currVideoUrl = catalogItems.get(position).getVideoUrl();
                 if (currVideoUrl.charAt(0) == 'h'){
+                    CatalogItem intentItem = catalogItems.get(position);
                     Intent intent = new Intent(getActivity(), PreviewActivity.class);
-                    intent.putExtra("serializeData",catalogItems.get(position));
+                    intent.putExtra("serializeData",intentItem);
                     startActivity(intent);
                 }
                 else{
