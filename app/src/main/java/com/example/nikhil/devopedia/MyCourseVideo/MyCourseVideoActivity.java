@@ -46,13 +46,13 @@ public class MyCourseVideoActivity extends AppCompatActivity {
     private YouTubePlayer youTubePlayer;
 
     // string that store data from api
-    private String apiData;
+    private String apiData = "";
 
     //object to store data
     private ArrayList<LessonItem> lessonItems;
 
     //constants
-    public static String REQUEST_URL_DEVOPEDIA = Constants.URL_MY_COURSES_ITEM;
+    public static String REQUEST_URL_DEVOPEDIA;
     public static final int LOADER_ID = 5;
     public String currCourseId;
 
@@ -63,6 +63,7 @@ public class MyCourseVideoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         currCourseId = getIntent().getStringExtra("CurrCourseId");
+        REQUEST_URL_DEVOPEDIA = Constants.URL_MY_COURSES_ITEM;
         REQUEST_URL_DEVOPEDIA = REQUEST_URL_DEVOPEDIA + currCourseId;
 
         final String actionBarTitle = getIntent().getStringExtra("ActionBarTitle");
@@ -121,7 +122,9 @@ public class MyCourseVideoActivity extends AppCompatActivity {
     };
 
     private void handleUI(){
-        extractFeatureFromJson();
+        if(!apiData.equals("")){
+            extractFeatureFromJson();
+        }
     }
 
     /**

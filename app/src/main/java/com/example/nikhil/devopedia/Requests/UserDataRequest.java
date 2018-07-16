@@ -18,14 +18,27 @@ public class UserDataRequest {
 
     private static final String LOG_TAG = UserDataRequest.class.getSimpleName();
 
-    private UserDataRequest(){
+    private String requestUrl;
+    private static String requestType;
 
+    public UserDataRequest(String requestUrl,int reqType){
+        this.requestUrl = requestUrl;
+
+        if(reqType == 0){
+            requestType = "GET";
+        }
+        else if(reqType == 1){
+            requestType = "POST";
+        }
+        else{
+            requestType = "DELETE";
+        }
     }
 
     /**
      * main driver function of class
      */
-    public static String fetchData(String requestUrl) {     // change string to your data object
+    public String fetchData() {     // change string to your data object
 
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -104,7 +117,9 @@ public class UserDataRequest {
             urlConnection.setReadTimeout(10000 /* milliseconds */);
             urlConnection.setConnectTimeout(15000 /* milliseconds */);
             urlConnection.setRequestProperty("x-access-token",token_value);
-            urlConnection.setRequestMethod("GET");
+
+            urlConnection.setRequestMethod(requestType);
+
             urlConnection.setDoInput(true);
 
             if(urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){

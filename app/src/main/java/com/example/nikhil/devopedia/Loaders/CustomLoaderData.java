@@ -11,10 +11,18 @@ import com.example.nikhil.devopedia.Requests.UserDataRequest;
 public class CustomLoaderData extends AsyncTaskLoader<String> {
 
     private String urls;
+    private int requestType;
 
     public CustomLoaderData(Context context, String urls){
         super(context);
         this.urls = urls;
+        requestType = 0;
+    }
+
+    public CustomLoaderData(Context context, String urls,int requestType){
+        super(context);
+        this.urls = urls;
+        this.requestType = requestType;
     }
 
     @Override
@@ -29,7 +37,8 @@ public class CustomLoaderData extends AsyncTaskLoader<String> {
         }
 
         String result;
-        result = UserDataRequest.fetchData(urls);
+        UserDataRequest userDataRequest = new UserDataRequest(urls,requestType);
+        result = userDataRequest.fetchData();
 
         return result;
     }

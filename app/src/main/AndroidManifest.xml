@@ -25,13 +25,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".LogIn.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MyCourseVideo.MyCourseVideoActivity" />
         <activity
-            android:name=".PreviewActivity"
+            android:name=".Preview.PreviewActivity"
             android:label="@string/title_activity_preview"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>

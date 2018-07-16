@@ -1,4 +1,4 @@
-package com.example.nikhil.devopedia;
+package com.example.nikhil.devopedia.LogIn;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Constants.Constants;
 import com.example.nikhil.devopedia.Loaders.CustomLoaderAuth;
+import com.example.nikhil.devopedia.R;
 
 /**
  * User Authentication Activity

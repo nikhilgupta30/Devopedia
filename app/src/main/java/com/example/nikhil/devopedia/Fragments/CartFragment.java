@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,7 +34,7 @@ import java.util.ArrayList;
 /**
  * fragment for cart items
  */
-public class CartFragment extends Fragment {
+public class CartFragment extends Fragment{
     /// constants
     public static final String REQUEST_URL_DEVOPEDIA = Constants.URL_CART;
     private static final int LOADER_ID = 2;
@@ -52,10 +54,11 @@ public class CartFragment extends Fragment {
     // custom adapter
     private CartAdapter adapter;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_my_courses_and_cart,container,false);
+        rootView = inflater.inflate(R.layout.fragment_mycourses_and_cart,container,false);
 
         context = getActivity();
 
@@ -79,7 +82,7 @@ public class CartFragment extends Fragment {
         }
 
         // setting up adapter
-        adapter = new CartAdapter(getActivity(),cartItems);
+        adapter = new CartAdapter(getActivity(),cartItems,getLoaderManager());
         ListView listView = (ListView) rootView.findViewById(R.id.course_list);
         listView.setAdapter(adapter);
 
@@ -155,6 +158,7 @@ public class CartFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        Log.v("no of items : ", cartItems.size()+"");
         adapter.clear();
     }
 

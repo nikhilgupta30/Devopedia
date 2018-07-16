@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +20,7 @@ import android.view.MenuItem;
 import com.example.nikhil.devopedia.Fragments.CartFragment;
 import com.example.nikhil.devopedia.Fragments.CatalogFragment;
 import com.example.nikhil.devopedia.Fragments.MyCoursesFragment;
+import com.example.nikhil.devopedia.LogIn.LoginActivity;
 
 /**
  * main class of App
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fragment_id = getIntent().getIntExtra("fragment_id",1);
+        fragment_id = getIntent().getIntExtra("fragment_id",3);
 
         // fab
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

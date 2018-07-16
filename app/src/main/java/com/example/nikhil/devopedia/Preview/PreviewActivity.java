@@ -1,6 +1,5 @@
-package com.example.nikhil.devopedia;
+package com.example.nikhil.devopedia.Preview;
 
-import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
@@ -18,18 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Constants.Constants;
-import com.example.nikhil.devopedia.Fragments.CartFragment;
-import com.example.nikhil.devopedia.Fragments.CatalogFragment;
 import com.example.nikhil.devopedia.Items.CatalogItem;
-import com.example.nikhil.devopedia.Items.MyCourseItem;
 import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
+import com.example.nikhil.devopedia.MainActivity;
+import com.example.nikhil.devopedia.R;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -70,7 +64,8 @@ public class PreviewActivity extends AppCompatActivity {
 
         // price
         price = (TextView) findViewById(R.id.price);
-        price.setText(currItem.getPrice()+"");
+        String priceValue = "₹ " + currItem.getPrice();
+        price.setText(priceValue);
 
         // introduction set
         introText = (TextView) findViewById(R.id.intro);

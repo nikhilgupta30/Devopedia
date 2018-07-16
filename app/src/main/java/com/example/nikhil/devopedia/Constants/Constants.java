@@ -10,5 +10,6 @@ public class Constants {
     public static final String URL_MY_COURSES_ITEM = "http://devopedia.herokuapp.com/api/student/course/";
     public static final String URL_BUY_COURSE = "http://devopedia.herokuapp.com/api/student/buy/";
     public static final String VIDEO_EMBED = "https://www.youtube.com/embed/";
+    public static final String URL_REMOVE_COURSE = "http://devopedia.herokuapp.com/api/student/cart/";
 
 }

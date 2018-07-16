@@ -22,7 +22,7 @@ import com.example.nikhil.devopedia.Adapters.CatalogAdapter;
 import com.example.nikhil.devopedia.Constants.Constants;
 import com.example.nikhil.devopedia.Items.CatalogItem;
 import com.example.nikhil.devopedia.Loaders.CustomLoaderData;
-import com.example.nikhil.devopedia.PreviewActivity;
+import com.example.nikhil.devopedia.Preview.PreviewActivity;
 import com.example.nikhil.devopedia.R;
 
 import org.json.JSONArray;
