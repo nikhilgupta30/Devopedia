@@ -198,6 +198,7 @@ public class PreviewActivity extends AppCompatActivity {
             int color = ContextCompat.getColor(PreviewActivity.this, R.color.preview_done);
             ColorStateList colorStateList = ColorStateList.valueOf(color);
             fab.setBackgroundTintList(colorStateList);
+            fab.setClickable(false);
         }
 
         snackbar.setAction("View Cart", new goToCartListener());
