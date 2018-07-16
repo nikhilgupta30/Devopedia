@@ -59,7 +59,7 @@ public class MyCoursesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_mycourses_and_cart,container,false);
+        rootView = inflater.inflate(R.layout.fragment_mycourses,container,false);
 
         context = getActivity();
 

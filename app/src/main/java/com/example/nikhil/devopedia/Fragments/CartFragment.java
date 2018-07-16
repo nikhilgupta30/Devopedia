@@ -9,13 +9,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Adapters.CartAdapter;
@@ -58,7 +57,7 @@ public class CartFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_mycourses_and_cart,container,false);
+        rootView = inflater.inflate(R.layout.fragment_cart,container,false);
 
         context = getActivity();
 
@@ -82,7 +81,7 @@ public class CartFragment extends Fragment{
         }
 
         // setting up adapter
-        adapter = new CartAdapter(getActivity(),cartItems,getLoaderManager());
+        adapter = new CartAdapter(getActivity(),cartItems,getLoaderManager(),rootView);
         ListView listView = (ListView) rootView.findViewById(R.id.course_list);
         listView.setAdapter(adapter);
 
@@ -130,9 +129,14 @@ public class CartFragment extends Fragment{
             JSONObject base = new JSONObject(apiData);
             JSONArray array = base.getJSONArray("items");
 
+            int total_price = 0;
+
             for(int i=0; i<array.length(); i++){
                 JSONObject current = array.getJSONObject(i);
                 JSONObject innerObj = current.getJSONObject("course");
+
+                total_price += innerObj.getInt("price");
+
                 CartItem obj = new CartItem(
                         innerObj.getString("_id"),
                         current.getString("_id"),
@@ -146,6 +150,8 @@ public class CartFragment extends Fragment{
                 cartItems.add(obj);
             }
 
+            TextView total_amount = (TextView)rootView.findViewById(R.id.total_amount);
+            total_amount.setText("Total : ₹ " + total_price);
             adapter.notifyDataSetChanged();
 
 

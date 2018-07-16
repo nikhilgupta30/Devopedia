@@ -12,12 +12,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,15 +37,22 @@ public class CartAdapter extends ArrayAdapter<CartItem> {
     ArrayList<CartItem> cartItems;
     Context context;
     int pos;
+
     LoaderManager loaderManager;
     String REQUEST_URL_DEVOPEDIA;
     private int LOADER_ID;
 
-    public CartAdapter(Activity context, ArrayList<CartItem> courses, LoaderManager loaderManager){
+    View rootView;
+
+    public CartAdapter(Activity context, ArrayList<CartItem> courses,
+                       LoaderManager loaderManager, View rootView){
         super(context,0,courses);
         this.cartItems = courses;
+
         this.context = context;
         this.loaderManager = loaderManager;
+
+        this.rootView = rootView;
     }
 
 
@@ -69,8 +78,11 @@ public class CartAdapter extends ArrayAdapter<CartItem> {
         TextView category = (TextView)listItemView.findViewById(R.id.course_intro);
         category.setText(currCourse.getIntro());
 
+        TextView price = (TextView)listItemView.findViewById(R.id.price);
+        price.setText("₹ " + currCourse.getPrice());
+
         // setting remove button
-        final Button remove = (Button)listItemView.findViewById(R.id.remove);
+        final ImageButton remove = (ImageButton) listItemView.findViewById(R.id.remove);
         remove.setTag(position);
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,8 +142,17 @@ public class CartAdapter extends ArrayAdapter<CartItem> {
     };
 
     private void handleUi(){
+        TextView total = (TextView)rootView.findViewById(R.id.total_amount);
+        String value = total.getText().toString();
+        value = value.substring(10);
+        int total_amount = Integer.parseInt(value);
+
+        total_amount -= cartItems.get(pos).getPrice();
+        total.setText("Total : ₹ " + total_amount);
+
         cartItems.remove(pos);
         CartAdapter.this.notifyDataSetChanged();
+        Toast.makeText(context, "Course Successfully Removed", Toast.LENGTH_SHORT).show();
     }
 
     /**

@@ -40,14 +40,26 @@
         android:id="@+id/course_intro"
         />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/remove"
-        android:text="Remove"
-        android:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_cart_delete"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/course_intro"
+        android:id="@+id/price"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/white"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@drawable/background_cart_price"
         />
 
 </RelativeLayout>
