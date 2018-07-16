@@ -4,11 +4,14 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.res.ColorStateList;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -48,6 +51,9 @@ public class PreviewActivity extends AppCompatActivity {
     private TextView introText;
     private TextView price;
 
+    // floating action button
+    FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +81,7 @@ public class PreviewActivity extends AppCompatActivity {
         REQUEST_URL_DEVOPEDIA = REQUEST_URL_DEVOPEDIA + currItem.getCourseId();
         Log.v("url : ",REQUEST_URL_DEVOPEDIA);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,7 +191,15 @@ public class PreviewActivity extends AppCompatActivity {
         }else{
             snackbar = Snackbar.make(findViewById(R.id.preview_window), "Course Added to Your Cart",
                     Snackbar.LENGTH_LONG).setAction("Action", null);
+
+            // changing fab
+            fab.setImageResource(R.drawable.ic_preview_done);
+
+            int color = ContextCompat.getColor(PreviewActivity.this, R.color.preview_done);
+            ColorStateList colorStateList = ColorStateList.valueOf(color);
+            fab.setBackgroundTintList(colorStateList);
         }
+
         snackbar.setAction("View Cart", new goToCartListener());
         snackbar.show();
     }

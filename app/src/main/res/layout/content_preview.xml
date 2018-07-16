@@ -19,10 +19,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/price"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/background_text_view"
             android:textColor="#FFFFFF"
             android:textSize="30dp"
-
             />
 
         <TextView
@@ -30,19 +29,60 @@
             android:layout_height="wrap_content"
             android:text="@string/about_the_course"
             android:textSize="20dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="2dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@android:color/black"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/intro"/>
+            android:id="@+id/intro"
+            android:paddingTop="0dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/introductory_video"
+            android:textSize="20dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="2dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@android:color/black"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            />
 
         <!--  Youtube Player Fragment  -->
         <fragment
             android:id="@+id/youtube_player_fragment"
             android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>
 
