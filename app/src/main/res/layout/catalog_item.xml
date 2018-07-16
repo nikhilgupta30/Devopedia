@@ -3,14 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_my_course_item"
+    android:background="@drawable/background_catalog_item"
     >
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="120dp"
         android:id="@+id/img"
         android:scaleType="centerCrop"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#B0BEC5"
+        android:id="@+id/separator"
+        android:layout_below="@+id/img"
         />
 
     <TextView
@@ -18,11 +26,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/course_title"
         android:textStyle="bold"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:textColor="#000000"
         android:textAppearance="?android:textAppearanceMedium"
         android:paddingTop="4dp"
-        android:layout_below="@+id/img"
+        android:layout_below="@+id/separator"
+        android:layout_centerHorizontal="true"
         />
 
 
