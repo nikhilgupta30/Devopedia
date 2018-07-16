@@ -114,8 +114,8 @@ public class UserDataRequest {
             Log.v(LOG_TAG,"executed");
 
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000 /* milliseconds */);
-            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setReadTimeout(30000 /* milliseconds */);
+            urlConnection.setConnectTimeout(35000 /* milliseconds */);
             urlConnection.setRequestProperty("x-access-token",token_value);
 
             urlConnection.setRequestMethod(requestType);
