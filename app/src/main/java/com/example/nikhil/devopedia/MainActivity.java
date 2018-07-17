@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Chat functionality is under development", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -198,6 +198,11 @@ public class MainActivity extends AppCompatActivity
             emailIntent.putExtra(Intent.EXTRA_TEXT, "Add your Feedback here");
 
             startActivity(Intent.createChooser(emailIntent, "Complete Action Using"));
+
+        } else if (id == R.id.nav_about){
+
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
 
         }
 

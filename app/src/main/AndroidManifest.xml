@@ -33,8 +33,9 @@
         <activity
             android:name=".Preview.PreviewActivity"
             android:label="@string/title_activity_preview"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>
