@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -164,14 +165,39 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_catalog) {
-            // Handle the camera action
+            fragmentManager.beginTransaction()
+                    .replace(R.id.contentFrame, new CatalogFragment())
+                    .commit();
         } else if (id == R.id.nav_cart) {
-
+            fragmentManager.beginTransaction()
+                    .replace(R.id.contentFrame, new CartFragment())
+                    .commit();
         } else if (id == R.id.nav_my_courses) {
-
+            fragmentManager.beginTransaction()
+                    .replace(R.id.contentFrame, new MyCoursesFragment())
+                    .commit();
         } else if (id == R.id.nav_share) {
 
+            // intent to send share content
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+            sharingIntent.setType("text/plain");
+            String shareBody = "Visit Our Site\n http://devopedia.herokuapp.com/";
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Devopedia");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
         } else if (id == R.id.nav_send_feedback) {
+
+            //email intent
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto","devopedia@gmail.com", null));
+
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Devopedia Feedback");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Add your Feedback here");
+
+            startActivity(Intent.createChooser(emailIntent, "Complete Action Using"));
 
         }
 
