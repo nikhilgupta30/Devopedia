@@ -2,42 +2,49 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="110dp"
     android:layout_margin="50dp"
     android:paddingTop="16dp"
-    android:paddingRight="24dp"
-    android:paddingLeft="24dp"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
     android:paddingBottom="16dp"
     android:background="@drawable/background_my_course_item"
     >
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
         android:id="@+id/img"
         android:scaleType="centerCrop"
+        android:layout_alignParentLeft="true"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/course_title"
+        android:text="default"
         android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="#000000"
         android:textAppearance="?android:textAppearanceMedium"
-        android:paddingTop="8dp"
-        android:layout_below="@+id/img"
+        android:paddingLeft="8dp"
+        android:layout_toRightOf= "@+id/img"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="12sp"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:layout_below="@+id/course_title"
-        android:id="@+id/course_intro"
+        android:id="@+id/price"
+        android:textSize="20sp"
+        android:text="default"
+        android:layout_marginLeft="16dp"
+        android:textColor="@android:color/white"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@drawable/background_cart_price"
+        android:layout_toRightOf= "@+id/img"
+        android:layout_alignParentBottom="true"
         />
 
     <ImageButton
@@ -49,17 +56,5 @@
         android:layout_alignParentBottom="true"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/course_intro"
-        android:id="@+id/price"
-        android:textSize="20sp"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/white"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:background="@drawable/background_cart_price"
-        />
 
 </RelativeLayout>

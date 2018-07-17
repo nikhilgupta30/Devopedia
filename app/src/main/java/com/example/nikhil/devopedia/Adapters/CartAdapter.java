@@ -1,8 +1,10 @@
 package com.example.nikhil.devopedia.Adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Loader;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -75,9 +77,6 @@ public class CartAdapter extends ArrayAdapter<CartItem> {
         TextView name = (TextView)listItemView.findViewById(R.id.course_title);
         name.setText(currCourse.getTitle());
 
-        TextView category = (TextView)listItemView.findViewById(R.id.course_intro);
-        category.setText(currCourse.getIntro());
-
         TextView price = (TextView)listItemView.findViewById(R.id.price);
         price.setText("₹ " + currCourse.getPrice());
 
@@ -93,27 +92,50 @@ public class CartAdapter extends ArrayAdapter<CartItem> {
                 REQUEST_URL_DEVOPEDIA = REQUEST_URL_DEVOPEDIA + cartItems.get(pos).getCartId();
                 LOADER_ID = 7 + pos;
 
-                // initiating loader for api
-                ConnectivityManager connMgr = (ConnectivityManager)
-                        context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-                if (networkInfo != null && networkInfo.isConnected()) {
-
-                    loaderManager.restartLoader(LOADER_ID,null,CartApi);
-
-                }
-                else{
-
-                    Toast.makeText(context,"check your internet connection",Toast.LENGTH_SHORT).show();
-
-                }
+                promptDeleteConfirm();
 
             }
         });
 
         return listItemView;
+
+    }
+
+    /**
+     * prompt for confirming delete
+     */
+    protected void promptDeleteConfirm() {
+
+        AlertDialog alertbox = new AlertDialog.Builder(context)
+                .setMessage("Confirm delete ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        // initiating loader for api
+                        ConnectivityManager connMgr = (ConnectivityManager)
+                                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+                        if (networkInfo != null && networkInfo.isConnected()) {
+
+                            loaderManager.restartLoader(LOADER_ID,null,CartApi);
+
+                        }
+                        else{
+                            Toast.makeText(context,"check your internet connection",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    }
+                })
+                .show();
 
     }
 
