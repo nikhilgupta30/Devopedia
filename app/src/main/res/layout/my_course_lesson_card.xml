@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:id="@+id/youtube_row_card_view"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="16dp"
+    app:cardCornerRadius="4dp"
+    app:contentPadding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <!-- youtube thumbnail view to show the thumbnail of videos -->
+        <com.google.android.youtube.player.YouTubeThumbnailView
+            android:id="@+id/video_thumbnail_image_view"
+            android:layout_width="150dp"
+            android:layout_height="90dp"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="@string/thumbnail_image_view_desc"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lesson_no"
+            android:text="default"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:background="@android:color/white"
+            />
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

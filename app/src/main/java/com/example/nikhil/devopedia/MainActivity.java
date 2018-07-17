@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fragment_id = getIntent().getIntExtra("fragment_id",2);
+        fragment_id = getIntent().getIntExtra("fragment_id",3);
 
         // fab
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

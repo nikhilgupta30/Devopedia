@@ -20,6 +20,8 @@ import java.util.ArrayList;
 public class YoutubeVideoAdapter extends RecyclerView.Adapter<YoutubeViewHolder> {
     private static final String TAG = YoutubeVideoAdapter.class.getSimpleName();
     private Context context;
+
+    // list that store video ids
     private ArrayList<String> youtubeVideoModelArrayList;
 
     //position to check which position is selected
@@ -33,38 +35,52 @@ public class YoutubeVideoAdapter extends RecyclerView.Adapter<YoutubeViewHolder>
 
     @Override
     public YoutubeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.my_course_video_custom_layout, parent, false);
+        View view = layoutInflater.inflate(R.layout.my_course_lesson_card, parent, false);
+
         return new YoutubeViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(YoutubeViewHolder holder, final int position) {
 
+        holder.lesson_no.setText("Lesson : " + (position+1) );
+
         //if selected position is equal to that mean view is selected so change the cardview color
         if (selectedPosition == position) {
-            holder.youtubeCardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            holder.youtubeCardView.setCardBackgroundColor
+                    (ContextCompat.getColor(context, R.color.curr_video_background));
         } else {
-            //if selected position is not equal to that mean view is not selected so change the cardview color to white back again
-            holder.youtubeCardView.setCardBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
+            //if selected position is not equal to that mean view is not selected so
+            // change the cardview color to white back again
+            holder.youtubeCardView.setCardBackgroundColor
+                    (ContextCompat.getColor(context, R.color.colorPrimary));
         }
 
         /*  initialize the thumbnail image view , we need to pass Developer Key */
-        holder.videoThumbnailImageView.initialize(Constants.DEVELOPER_KEY, new YouTubeThumbnailView.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
+        holder.videoThumbnailImageView.initialize
+                (Constants.DEVELOPER_KEY, new YouTubeThumbnailView.OnInitializedListener() {
+
+                    @Override
+            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView,
+                                                final YouTubeThumbnailLoader youTubeThumbnailLoader) {
                 //when initialization is sucess, set the video id to thumbnail to load
                 youTubeThumbnailLoader.setVideo(youtubeVideoModelArrayList.get(position));
 
-                youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+                youTubeThumbnailLoader.setOnThumbnailLoadedListener
+                        (new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+
                     @Override
                     public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
-                        //when thumbnail loaded successfully release the thumbnail loader as we are showing thumbnail in adapter
+                        //when thumbnail loaded successfully release the thumbnail loader as
+                        // we are showing thumbnail in adapter
                         youTubeThumbnailLoader.release();
                     }
 
                     @Override
-                    public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+                    public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView,
+                                                 YouTubeThumbnailLoader.ErrorReason errorReason) {
                         //print or show error when thumbnail load failed
                         Log.e(TAG, "Youtube Thumbnail Error");
                     }
@@ -72,7 +88,8 @@ public class YoutubeVideoAdapter extends RecyclerView.Adapter<YoutubeViewHolder>
             }
 
             @Override
-            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView,
+                                                YouTubeInitializationResult youTubeInitializationResult) {
                 //print or show error when initialization failed
                 Log.e(TAG, "Youtube Initialization Failure");
 

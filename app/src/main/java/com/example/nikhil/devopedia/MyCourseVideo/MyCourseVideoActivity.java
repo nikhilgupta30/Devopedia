@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Constants.Constants;
@@ -45,6 +46,10 @@ public class MyCourseVideoActivity extends AppCompatActivity {
     //youtube player to play video when new video selected
     private YouTubePlayer youTubePlayer;
 
+    // lesson description card
+    private TextView lessonTitle;
+    private TextView lessonDescription;
+
     // string that store data from api
     private String apiData = "";
 
@@ -61,6 +66,9 @@ public class MyCourseVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_course_video);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        lessonTitle = findViewById(R.id.current_lesson);
+        lessonDescription = findViewById(R.id.current_lesson_content);
 
         currCourseId = getIntent().getStringExtra("CurrCourseId");
         REQUEST_URL_DEVOPEDIA = Constants.URL_MY_COURSES_ITEM;
@@ -174,6 +182,12 @@ public class MyCourseVideoActivity extends AppCompatActivity {
                 if (!wasRestored) {
                     youTubePlayer = player;
 
+                    // setting lesson title and content
+                    String currentStr = "Lesson : 1 " + lessonItems.get(0).getTitle();
+                    lessonTitle.setText(currentStr);
+                    currentStr = lessonItems.get(0).getDescription();
+                    lessonDescription.setText(currentStr);
+
                     //set the player style default
                     youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
 
@@ -201,7 +215,8 @@ public class MyCourseVideoActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         //Horizontal direction recycler view
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
@@ -209,7 +224,9 @@ public class MyCourseVideoActivity extends AppCompatActivity {
      * populate the recycler view and implement the click event here
      */
     private void populateRecyclerView() {
-        final YoutubeVideoAdapter adapter = new YoutubeVideoAdapter(this, youtubeVideoArrayList);
+        final YoutubeVideoAdapter adapter = new
+                YoutubeVideoAdapter(this, youtubeVideoArrayList);
+
         recyclerView.setAdapter(adapter);
 
         //set click event
@@ -223,6 +240,12 @@ public class MyCourseVideoActivity extends AppCompatActivity {
                 if (youTubePlayerFragment != null && youTubePlayer != null) {
                     //update selected position
                     adapter.setSelectedPosition(position);
+
+                    // setting lesson title and content
+                    String currentStr = "Lesson : " + (position+1) + " " + lessonItems.get(position).getTitle();
+                    lessonTitle.setText(currentStr);
+                    currentStr = lessonItems.get(position).getDescription();
+                    lessonDescription.setText(currentStr);
 
                     //load selected video
                     youTubePlayer.cueVideo(youtubeVideoArrayList.get(position));
@@ -246,6 +269,7 @@ public class MyCourseVideoActivity extends AppCompatActivity {
             tempString = tempString.substring(Constants.VIDEO_EMBED.length());
             youtubeVideoArrayList.add(tempString);
         }
+
     }
 
     @Override
@@ -254,7 +278,8 @@ public class MyCourseVideoActivity extends AppCompatActivity {
         return true;
     }
 
-    public static class RecyclerViewOnClickListenerMyCourseVideo implements RecyclerView.OnItemTouchListener{
+    public static class RecyclerViewOnClickListenerMyCourseVideo
+            implements RecyclerView.OnItemTouchListener{
 
         private OnItemClickListener mListener;
         private GestureDetector mGestureDetector;
