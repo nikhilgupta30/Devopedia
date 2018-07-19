@@ -2,6 +2,8 @@ package com.example.nikhil.devopedia.Requests;
 
 import android.util.Log;
 
+import com.example.nikhil.devopedia.Constants.Constants;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +22,7 @@ public class UserDataRequest {
 
     private String requestUrl;
     private static String requestType;
+    private static String tokenValue;
 
     public UserDataRequest(String requestUrl,int reqType){
         this.requestUrl = requestUrl;
@@ -40,18 +43,26 @@ public class UserDataRequest {
      */
     public String fetchData() {     // change string to your data object
 
-        // Create URL object
-        URL url = createUrl(requestUrl);
+        tokenValue = Constants.getToken();
 
-        // Perform HTTP request to the URL and receive a JSON response back
-        String jsonResponse = null;
-        try {
-            jsonResponse = makeHttpRequest(url);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+        if(tokenValue != null) {
+
+            // Create URL object
+            URL url = createUrl(requestUrl);
+
+            // Perform HTTP request to the URL and receive a JSON response back
+            String jsonResponse = null;
+            try {
+                jsonResponse = makeHttpRequest(url);
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+            }
+
+            return jsonResponse;
+
         }
 
-        return jsonResponse;
+        return null;
 
     }
 
@@ -96,10 +107,6 @@ public class UserDataRequest {
     private static String makeHttpRequest(URL url) throws IOException {
 
         String jsonResponse = "";
-        String token_value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZDRmMGQxM2Rh" +
-                "YmNkMDAxNGQ2Nzc4MiIsImlhdCI6MTUzMDc4MDY5MX0.C-9Vs4iDhrowg69Eh8N0BXOql-7rsf" +
-                "54YgciGGtE1dw";
-
 
         // If the URL is null, then return early.
         if (url == null) {
@@ -116,7 +123,7 @@ public class UserDataRequest {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(30000 /* milliseconds */);
             urlConnection.setConnectTimeout(35000 /* milliseconds */);
-            urlConnection.setRequestProperty("x-access-token",token_value);
+            urlConnection.setRequestProperty("x-access-token",tokenValue);
 
             urlConnection.setRequestMethod(requestType);
 

@@ -65,21 +65,22 @@ public class MyCoursesFragment extends Fragment {
 
         myCourseItems = new ArrayList<>();
 
-        // initiating loader for api
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(Constants.getToken() != null) {
+            // initiating loader for api
+            ConnectivityManager connMgr = (ConnectivityManager)
+                    getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnected()) {
+            if (networkInfo != null && networkInfo.isConnected()) {
 
-            getLoaderManager().initLoader(LOADER_ID,null,myCoursesApi);
+                getLoaderManager().initLoader(LOADER_ID, null, myCoursesApi);
 
-        }
-        else{
+            } else {
 
-            Toast.makeText(context,"check your internet connection",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "check your internet connection", Toast.LENGTH_SHORT).show();
 
+            }
         }
 
         // setting up adapter

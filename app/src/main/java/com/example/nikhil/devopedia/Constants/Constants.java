@@ -12,4 +12,13 @@ public class Constants {
     public static final String VIDEO_EMBED = "https://www.youtube.com/embed/";
     public static final String URL_REMOVE_COURSE = "http://devopedia.herokuapp.com/api/student/cart/";
 
+    private static String Token;
+
+    public static String getToken() {
+        return Token;
+    }
+
+    public static void setToken(String token){
+        Token = token;
+    }
 }

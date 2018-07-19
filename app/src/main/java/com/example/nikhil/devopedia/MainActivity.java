@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.nikhil.devopedia.About.AboutActivity;
+import com.example.nikhil.devopedia.Constants.Constants;
 import com.example.nikhil.devopedia.Fragments.CartFragment;
 import com.example.nikhil.devopedia.Fragments.CatalogFragment;
 import com.example.nikhil.devopedia.Fragments.MyCoursesFragment;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity
             token = getIntent().getStringExtra("token");
             SharedPreferences.Editor mEditor = mPrefs.edit();
             mEditor.putString("token", token).commit();
+            Constants.setToken(token);
         }
 
         super.onCreate(savedInstanceState);
@@ -166,6 +168,7 @@ public class MainActivity extends AppCompatActivity
             token = null;
             SharedPreferences.Editor mEditor = mPrefs.edit();
             mEditor.putString("token", token).commit();
+            Constants.setToken(token);
 
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             finish();
@@ -183,6 +186,7 @@ public class MainActivity extends AppCompatActivity
         Log.v("status onstart : ","executed");
         // token
         token = mPrefs.getString("token", null);
+        Constants.setToken(token);
 
         // start login activity if the user is not logged in
         if( token == null) {
@@ -198,6 +202,7 @@ public class MainActivity extends AppCompatActivity
         Log.v("status onstop : ","executed");
         SharedPreferences.Editor mEditor = mPrefs.edit();
         mEditor.putString("token", token).commit();
+        Constants.setToken(token);
         super.onStop();
     }
 
