@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.nikhil.devopedia.About.AboutActivity;
 import com.example.nikhil.devopedia.Constants.Constants;
@@ -43,6 +44,13 @@ public class MainActivity extends AppCompatActivity
     // to store token when user quits the app
     SharedPreferences mPrefs;
 
+    private View navHeader;
+
+    private TextView usernameView;
+    private TextView userInitials;
+
+    private String username = "xyz";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,9 +58,18 @@ public class MainActivity extends AppCompatActivity
 
         if(getIntent().hasExtra("token")){
             token = getIntent().getStringExtra("token");
+            username = getIntent().getStringExtra("username");
+
             SharedPreferences.Editor mEditor = mPrefs.edit();
             mEditor.putString("token", token).commit();
+            mEditor.putString("username", username).commit();
             Constants.setToken(token);
+
+        }else {
+            token = mPrefs.getString("token",null);
+            Constants.setToken(token);
+            username = mPrefs.getString("username","xyz");
+
         }
 
         super.onCreate(savedInstanceState);
@@ -67,7 +84,6 @@ public class MainActivity extends AppCompatActivity
         if(getIntent().hasExtra("fragment_id")) {
             fragment_id = getIntent().getIntExtra("fragment_id", 3);
         }
-
 
         // fab
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -89,6 +105,18 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        navHeader = navigationView.getHeaderView(0);
+
+        Log.v("check ","oncreate");
+
+        usernameView = (TextView) navHeader.findViewById(R.id.username);
+        usernameView.setText(username);
+
+        userInitials = (TextView) navHeader.findViewById(R.id.user_initials);
+        char firstLetter = username.charAt(0);
+        firstLetter = Character.toUpperCase(firstLetter);
+        userInitials.setText(firstLetter+"");
 
         // todo : calling fragment testing
         fragmentManager = getFragmentManager();
@@ -166,9 +194,13 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sign_out) {
             token = null;
+            username = "xyz";
             SharedPreferences.Editor mEditor = mPrefs.edit();
             mEditor.putString("token", token).commit();
+            mEditor.putString("username", username).commit();
             Constants.setToken(token);
+            usernameView.setText(username);
+            userInitials.setText('X'+"");
 
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             finish();
@@ -183,7 +215,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onStart() {
-        Log.v("status onstart : ","executed");
+        Log.v("check ","start");
         // token
         token = mPrefs.getString("token", null);
         Constants.setToken(token);
@@ -199,10 +231,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onStop() {
-        Log.v("status onstop : ","executed");
+        Log.v("status onstop : ",username);
         SharedPreferences.Editor mEditor = mPrefs.edit();
         mEditor.putString("token", token).commit();
-        Constants.setToken(token);
+        mEditor.putString("username", username).commit();
         super.onStop();
     }
 

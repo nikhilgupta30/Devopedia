@@ -175,8 +175,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if(token != null){
                 Toast.makeText(LoginActivity.this,"Successfully logged in",Toast.LENGTH_SHORT).show();
 
+                String username = email;
+                int index=1;
+                for(int i=0;i<username.length();i++){
+                    if(username.charAt(i)=='@'){
+                        index = i;
+                        break;
+                    }
+                }
+
+                username = username.substring(0,index);
+
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("token",token);
+                intent.putExtra("username",username);
                 finish();
                 startActivity(intent);
             }
