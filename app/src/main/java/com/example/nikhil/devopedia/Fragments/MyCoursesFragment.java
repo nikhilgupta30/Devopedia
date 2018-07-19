@@ -140,7 +140,7 @@ public class MyCoursesFragment extends Fragment {
      */
     private void extractFeatureFromJson(){
         try {
-            JSONArray array = new JSONArray(apiData);
+                JSONArray array = new JSONArray(apiData);
 
             for(int i=0; i<array.length(); i++){
                 JSONObject current = array.getJSONObject(i);

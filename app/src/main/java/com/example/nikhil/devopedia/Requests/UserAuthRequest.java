@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -32,7 +33,7 @@ public class UserAuthRequest {
     /**
      * main driver function of class
      */
-    public static String fetchData(String requestUrl) {     // change string to your data object
+    public static String fetchData(String requestUrl, HashMap<String,String> credentials) {
 
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -40,7 +41,7 @@ public class UserAuthRequest {
         // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
         try {
-            jsonResponse = makeHttpRequest(url);
+            jsonResponse = makeHttpRequest(url,credentials);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
@@ -90,14 +91,15 @@ public class UserAuthRequest {
     /**
      * function fot http request
      */
-    private static String makeHttpRequest(URL url) throws IOException {
+    private static String makeHttpRequest(URL url, HashMap<String,String> credentials)
+            throws IOException {
 
         // hash map for storing user entered email and password
         JSONObject postDataParams = new JSONObject();
 
         try {
-            postDataParams.put("email", "nikhilgupta311@gmail.com");
-            postDataParams.put("password", "123456789");
+            postDataParams.put("email", credentials.get("email"));
+            postDataParams.put("password", credentials.get("password"));
         }
         catch (Exception e){
             Log.e(LOG_TAG,"exception occured : " + e);
@@ -117,8 +119,10 @@ public class UserAuthRequest {
         try {
 
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000 /* milliseconds */);
-            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setReadTimeout(30000 /* milliseconds */);
+            urlConnection.setConnectTimeout(35000 /* milliseconds */);
+            urlConnection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+
             urlConnection.setRequestMethod("POST");
 
             urlConnection.setDoInput(true);

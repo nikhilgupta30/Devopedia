@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.nikhil.devopedia.About.AboutActivity;
 import com.example.nikhil.devopedia.Fragments.CartFragment;
 import com.example.nikhil.devopedia.Fragments.CatalogFragment;
 import com.example.nikhil.devopedia.Fragments.MyCoursesFragment;
@@ -30,15 +33,25 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     // todo : remove token initialization when make fragments
-    private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZDRmMGQxM2RhYmN" +
-            "kMDAxNGQ2Nzc4MiIsImlhdCI6MTUzMDc4MDY5MX0.C-9Vs4iDhrowg69Eh8N0BXOql-7rsf54YgciGGtE1dw";
+    private String token;
 
     private FragmentManager fragmentManager;
 
     private int fragment_id;
 
+    // to store token when user quits the app
+    SharedPreferences mPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        mPrefs = getSharedPreferences("label", 0);
+
+        if(getIntent().hasExtra("token")){
+            token = getIntent().getStringExtra("token");
+            SharedPreferences.Editor mEditor = mPrefs.edit();
+            mEditor.putString("token", token).commit();
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -47,7 +60,12 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fragment_id = getIntent().getIntExtra("fragment_id",1);
+        // fragment_id
+        fragment_id = 3;
+        if(getIntent().hasExtra("fragment_id")) {
+            fragment_id = getIntent().getIntExtra("fragment_id", 3);
+        }
+
 
         // fab
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -69,13 +87,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //token  = null;
-        // start login activity if the user is not logged in
-        if( token == null) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-        }
 
         // todo : calling fragment testing
         fragmentManager = getFragmentManager();
@@ -152,11 +163,44 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sign_out) {
+            token = null;
+            SharedPreferences.Editor mEditor = mPrefs.edit();
+            mEditor.putString("token", token).commit();
+
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            finish();
+            startActivity(intent);
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    @Override
+    protected void onStart() {
+        Log.v("status onstart : ","executed");
+        // token
+        token = mPrefs.getString("token", null);
+
+        // start login activity if the user is not logged in
+        if( token == null) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            finish();
+            startActivity(intent);
+        }
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.v("status onstop : ","executed");
+        SharedPreferences.Editor mEditor = mPrefs.edit();
+        mEditor.putString("token", token).commit();
+        super.onStop();
+    }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -165,17 +209,23 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_catalog) {
+
             fragmentManager.beginTransaction()
                     .replace(R.id.contentFrame, new CatalogFragment())
                     .commit();
+
         } else if (id == R.id.nav_cart) {
+
             fragmentManager.beginTransaction()
                     .replace(R.id.contentFrame, new CartFragment())
                     .commit();
+
         } else if (id == R.id.nav_my_courses) {
+
             fragmentManager.beginTransaction()
                     .replace(R.id.contentFrame, new MyCoursesFragment())
                     .commit();
+
         } else if (id == R.id.nav_share) {
 
             // intent to send share content

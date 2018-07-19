@@ -1,7 +1,9 @@
-package com.example.nikhil.devopedia;
+package com.example.nikhil.devopedia.About;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.nikhil.devopedia.R;
 
 public class AboutActivity extends AppCompatActivity {
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -12,15 +13,32 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.style.UnderlineSpan;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Constants.Constants;
+import com.example.nikhil.devopedia.Items.CartItem;
+import com.example.nikhil.devopedia.Items.MyCourseItem;
 import com.example.nikhil.devopedia.Loaders.CustomLoaderAuth;
+import com.example.nikhil.devopedia.MainActivity;
 import com.example.nikhil.devopedia.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 /**
  * User Authentication Activity
@@ -36,7 +54,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private String result;
 
-    private EditText email,password;
+    private EditText emailField,passwordField;
+
+    private TextView register;
+
+    private String email;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,21 +68,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         button = (Button)findViewById(R.id.login);
         button.setOnClickListener(this);
 
-        password = (EditText)findViewById(R.id.password);
-        email = (EditText)findViewById(R.id.email);
+        passwordField = (EditText)findViewById(R.id.password);
+        emailField = (EditText)findViewById(R.id.email);
 
+        register = (TextView)findViewById(R.id.register);
+
+        // underlining the text
+        SpannableString content = new SpannableString("Register Here.");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        register.setText(content);
+
+        //email = emailField.getText().toString().trim();
+
+        // checks regularly if user types write format of email
+//        emailField.addTextChangedListener(new TextWatcher() {
+//            public void afterTextChanged(Editable s) {
+//
+//                if (isValidEmail(email))
+//                {
+//                    Toast.makeText(LoginActivity.this,"valid email address",
+//                            Toast.LENGTH_SHORT).show();
+//                    // or
+//                    //textView.setText("valid email");
+//                }
+//                else
+//                {
+//                    Toast.makeText(LoginActivity.this,"Invalid email address",
+//                            Toast.LENGTH_SHORT).show();
+//                    //or
+//                    //textView.setText("invalid email");
+//                }
+//            }
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                // other stuffs
+//            }
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                // other stuffs
+//            }
+//        });
+
+    }
+
+    // helper function to check whether a user has entered a right email format
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
     @Override
@@ -69,6 +124,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.login:
                 authenticate();
+                break;
+
+            case R.id.register:
+                //registerUser();
+                break;
 
         }
     }
@@ -85,17 +145,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             getLoaderManager().restartLoader(LOADER_ID, null, this);
 
         }
+        else{
+
+            Toast.makeText(LoginActivity.this, "check your internet connection",
+                    Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     @Override
     public Loader<String> onCreateLoader(int i, Bundle bundle) {
-        String[] input = new String[2];
-        input[0] = new String();
-        input[0] = email.getText().toString();
-        input[1] = new String();
-        input[1] = password.getText().toString();
+        email = emailField.getText().toString();
+        password = passwordField.getText().toString();
+        HashMap<String,String> credentials = new HashMap<>();
+        credentials.put("email",email);
+        credentials.put("password",password);
 
-        return new CustomLoaderAuth(LoginActivity.this,authUrl);
+        return new CustomLoaderAuth(LoginActivity.this,authUrl, credentials);
     }
 
     @Override
@@ -105,9 +171,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Toast.makeText(LoginActivity.this,"log in failed",Toast.LENGTH_SHORT).show();
         }
         else{
-            Toast.makeText(LoginActivity.this,"Successfully logged in",Toast.LENGTH_SHORT).show();
+            String token = extractFeatureFromJson(data);
+            if(token != null){
+                Toast.makeText(LoginActivity.this,"Successfully logged in",Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("token",token);
+                finish();
+                startActivity(intent);
+            }
+
         }
 
+    }
+
+    /**
+     * utility function to extract features from incoming json file
+     */
+    private String extractFeatureFromJson(String apiData){
+
+        String token = null;
+        try {
+            JSONObject base = new JSONObject(apiData);
+            if(base.getBoolean("success")){
+                token =  base.getString("token");
+            }
+
+        }
+        catch (JSONException e){
+            Log.e("Login Window","Problem parsing data from api",e);
+        }
+
+        return token;
     }
 
     @Override
@@ -115,11 +210,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         result = "";
     }
 
+
+    // back key operation
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             exitByBackKey();
-
-            //moveTaskToBack(false);
 
             return true;
         }
