@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -107,8 +108,20 @@ public class PreviewActivity extends AppCompatActivity {
             }
         });
 
-        generateVideoList();
-        initializeYoutubePlayer();
+        youTubePlayerFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.youtube_player_fragment);
+
+        String videoID = currItem.getVideoUrl();
+        if(URLUtil.isValidUrl(videoID)){
+            generateVideoList();
+            initializeYoutubePlayer();
+        }
+        else{
+            TextView noVideoMessage = (TextView)findViewById(R.id.no_video);
+            noVideoMessage.setVisibility(View.VISIBLE);
+        }
+
+
 
     }
 
@@ -116,9 +129,6 @@ public class PreviewActivity extends AppCompatActivity {
      * initialize youtube player via Fragment and get instance of YoutubePlayer
      */
     private void initializeYoutubePlayer() {
-
-        youTubePlayerFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.youtube_player_fragment);
 
         if (youTubePlayerFragment == null)
             return;

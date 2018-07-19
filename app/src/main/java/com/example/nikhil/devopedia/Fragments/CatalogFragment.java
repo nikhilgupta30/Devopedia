@@ -90,17 +90,12 @@ public class CatalogFragment extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String currVideoUrl = catalogItems.get(position).getVideoUrl();
-                if (currVideoUrl.charAt(0) == 'h'){
-                    CatalogItem intentItem = catalogItems.get(position);
-                    Intent intent = new Intent(getActivity(), PreviewActivity.class);
-                    intent.putExtra("serializeData",intentItem);
-                    startActivity(intent);
-                }
-                else{
-                    Toast.makeText(context,"video link is not available for this",
-                            Toast.LENGTH_SHORT).show();
-                }
+
+                CatalogItem intentItem = catalogItems.get(position);
+                Intent intent = new Intent(getActivity(), PreviewActivity.class);
+                intent.putExtra("serializeData",intentItem);
+                startActivity(intent);
+
             }
         });
 

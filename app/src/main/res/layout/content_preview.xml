@@ -76,6 +76,19 @@
             android:layout_marginRight="8dp"
             />
 
+        <TextView
+            android:id="@+id/no_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="0dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:text="No Introductory Video is available for this Course. Inconvenience is regretted."
+            android:textColor="@android:color/holo_red_dark"
+            android:visibility="gone"
+            />
+
         <!--  Youtube Player Fragment  -->
         <fragment
             android:id="@+id/youtube_player_fragment"
