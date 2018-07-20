@@ -29,9 +29,21 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:textSize="16dp"
-        android:layout_marginBottom="35dp"
-        android:layout_above="@+id/password"
+        android:layout_marginBottom="4dp"
+        android:layout_above="@+id/invalid_email_message"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/invalid_email_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/password"
+        android:text="Enter valid E-mail Address !"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:visibility="invisible"
+        />
 
     <EditText
         android:id="@+id/password"
@@ -42,17 +54,29 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="150dp"
         android:layout_alignBottom="@+id/login"
         android:layout_alignLeft="@+id/email"
         android:layout_alignStart="@+id/email" />
+
+    <TextView
+        android:id="@+id/login_fail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login"
+        android:text="Incorrect Email or Password"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:visibility="invisible"
+        />
 
     <Button
         android:id="@+id/login"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:background="@drawable/background_login_button"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="60dp"
         android:layout_above="@+id/register"
         android:layout_centerHorizontal="true"
         android:text="Login"

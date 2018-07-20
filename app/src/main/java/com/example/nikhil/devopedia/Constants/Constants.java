@@ -11,6 +11,7 @@ public class Constants {
     public static final String URL_BUY_COURSE = "http://devopedia.herokuapp.com/api/student/buy/";
     public static final String VIDEO_EMBED = "https://www.youtube.com/embed/";
     public static final String URL_REMOVE_COURSE = "http://devopedia.herokuapp.com/api/student/cart/";
+    public static final String URl_WEBSITE = "https://devopedia.herokuapp.com/student";
 
     private static String Token;
 

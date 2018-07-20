@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,8 +23,10 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +75,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         button.setOnClickListener(this);
 
         passwordField = (EditText)findViewById(R.id.password);
+        passwordField.setOnClickListener(this);
+
         emailField = (EditText)findViewById(R.id.email);
+        emailField.setOnClickListener(this);
 
         register = (TextView)findViewById(R.id.register);
 
@@ -80,35 +86,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         SpannableString content = new SpannableString("Register Here.");
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         register.setText(content);
+        register.setOnClickListener(this);
 
-        //email = emailField.getText().toString().trim();
-
-        // checks regularly if user types write format of email
-//        emailField.addTextChangedListener(new TextWatcher() {
-//            public void afterTextChanged(Editable s) {
-//
-//                if (isValidEmail(email))
-//                {
-//                    Toast.makeText(LoginActivity.this,"valid email address",
-//                            Toast.LENGTH_SHORT).show();
-//                    // or
-//                    //textView.setText("valid email");
-//                }
-//                else
-//                {
-//                    Toast.makeText(LoginActivity.this,"Invalid email address",
-//                            Toast.LENGTH_SHORT).show();
-//                    //or
-//                    //textView.setText("invalid email");
-//                }
-//            }
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                // other stuffs
-//            }
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                // other stuffs
-//            }
-//        });
+         //checks regularly if user types write format of email
+        emailField.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                email = emailField.getText().toString();
+                if (!isValidEmail(email)) {
+                    TextView invalidEmailView = findViewById(R.id.invalid_email_message);
+                    invalidEmailView.setVisibility(View.VISIBLE);
+                    button.setClickable(false);
+                }
+                else {
+                    TextView invalidEmailView = findViewById(R.id.invalid_email_message);
+                    invalidEmailView.setVisibility(View.INVISIBLE);
+                    button.setClickable(true);
+                }
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // other stuffs
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // other stuffs
+            }
+        });
 
     }
 
@@ -127,9 +128,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.register:
-                //registerUser();
+                registerUser();
                 break;
 
+            case R.id.email:
+            case R.id.password:
+                TextView loginFail = findViewById(R.id.login_fail);
+                loginFail.setVisibility(View.INVISIBLE);
+                break;
+        }
+    }
+
+    public void registerUser(){
+        String url = Constants.URl_WEBSITE;
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
         }
     }
 
@@ -168,12 +183,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onLoadFinished(Loader<String> loader, String data) {
 
         if(data.equals("false") ){
-            Toast.makeText(LoginActivity.this,"log in failed",Toast.LENGTH_SHORT).show();
+            TextView loginFail = findViewById(R.id.login_fail);
+            loginFail.setVisibility(View.VISIBLE);
+            passwordField.getText().clear();
+
+            TextView invalidEmailView = findViewById(R.id.invalid_email_message);
+            invalidEmailView.setVisibility(View.INVISIBLE);
         }
         else{
             String token = extractFeatureFromJson(data);
             if(token != null){
-                Toast.makeText(LoginActivity.this,"Successfully logged in",Toast.LENGTH_SHORT).show();
 
                 String username = email;
                 int index=1;
@@ -185,6 +204,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
 
                 username = username.substring(0,index);
+
+                Toast.makeText(LoginActivity.this,"Welcome " + username,
+                        Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("token",token);
