@@ -1,61 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#B0BEC5"
-    >
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginLeft="4dp"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/total_amount"
-            android:textColor="@android:color/white"
-            android:textSize="28sp"
-            android:background="@drawable/background_cart_text"
-            />
-
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/payment"
-            android:text="Make Payment"
-            android:textColor="@android:color/white"
-            android:drawableLeft="@drawable/ic_cart_payment"
-            android:background="@drawable/background_button"
-            android:layout_alignParentRight="true"
-            />
-
-    </RelativeLayout>
-
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/course_list"
-        android:orientation="vertical"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"
-        android:paddingRight="16dp"
-        android:drawSelectorOnTop="true"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="16.0sp"
+        android:orientation="vertical"
         android:background="#B0BEC5"
-        android:scrollbars="none"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/total_amount"
+                android:textColor="@android:color/white"
+                android:textSize="28sp"
+                android:background="@drawable/background_cart_text"
+                />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/payment"
+                android:text="Make Payment"
+                android:textColor="@android:color/white"
+                android:drawableLeft="@drawable/ic_cart_payment"
+                android:background="@drawable/background_button"
+                android:layout_alignParentRight="true"
+                />
+
+        </RelativeLayout>
+
+        <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/course_list"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:drawSelectorOnTop="true"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="16.0sp"
+            android:background="#B0BEC5"
+            android:scrollbars="none"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textAppearance="?android:textAppearanceMedium"
         />
 
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>
 

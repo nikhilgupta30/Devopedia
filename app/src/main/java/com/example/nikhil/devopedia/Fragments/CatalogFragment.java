@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nikhil.devopedia.Adapters.CatalogAdapter;
@@ -55,6 +56,9 @@ public class CatalogFragment extends Fragment {
     // custom adapter
     private CatalogAdapter adapter;
 
+    // when list is empty or internet connection is down
+    private TextView mEmptyStateTextView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,6 +67,14 @@ public class CatalogFragment extends Fragment {
         context = getActivity();
 
         catalogItems = new ArrayList<>();
+
+        // setting up adapter
+        adapter = new CatalogAdapter(getActivity(),catalogItems);
+        GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
+        gridview.setAdapter(adapter);
+
+        mEmptyStateTextView = (TextView) rootView.findViewById(R.id.empty_view);
+        gridview.setEmptyView(mEmptyStateTextView);
 
         // initiating loader for api
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -77,14 +89,12 @@ public class CatalogFragment extends Fragment {
         }
         else{
 
-            Toast.makeText(context,"check your internet connection",Toast.LENGTH_SHORT).show();
+            View loadingIndicator = rootView.findViewById(R.id.progressBar);
+            loadingIndicator.setVisibility(View.GONE);
+
+            mEmptyStateTextView.setText("No available internet connection");
 
         }
-
-        // setting up adapter
-        adapter = new CatalogAdapter(getActivity(),catalogItems);
-        GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
-        gridview.setAdapter(adapter);
 
         // todo : change when all video links are available
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -132,7 +142,14 @@ public class CatalogFragment extends Fragment {
     };
 
     private void handleUI(){
+        View progress = rootView.findViewById(R.id.progressBar);
+        progress.setVisibility(View.GONE);
+
         extractFeatureFromJson();
+
+        if(catalogItems.size() == 0){
+            mEmptyStateTextView.setText("No Current My Courses");
+        }
     }
 
     /**

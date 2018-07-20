@@ -175,6 +175,11 @@ public class CartAdapter extends ArrayAdapter<CartItem> {
         cartItems.remove(pos);
         CartAdapter.this.notifyDataSetChanged();
         Toast.makeText(context, "Course Successfully Removed", Toast.LENGTH_SHORT).show();
+
+        if(cartItems.size() == 0) {
+            TextView mEmptyStateTextView = rootView.findViewById(R.id.empty_view);
+            mEmptyStateTextView.setText("Your Cart is Empty");
+        }
     }
 
     /**

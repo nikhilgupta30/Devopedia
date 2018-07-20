@@ -3,6 +3,7 @@ package com.example.nikhil.devopedia.Fragments;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -53,6 +54,8 @@ public class CartFragment extends Fragment{
     // custom adapter
     private CartAdapter adapter;
 
+    // when list is empty or internet connection is down
+    private TextView mEmptyStateTextView;
 
     @Nullable
     @Override
@@ -62,6 +65,14 @@ public class CartFragment extends Fragment{
         context = getActivity();
 
         cartItems = new ArrayList<>();
+
+        // setting up adapter
+        adapter = new CartAdapter(getActivity(),cartItems,getLoaderManager(),rootView);
+        ListView listView = (ListView) rootView.findViewById(R.id.course_list);
+        listView.setAdapter(adapter);
+
+        mEmptyStateTextView = (TextView) rootView.findViewById(R.id.empty_view);
+        listView.setEmptyView(mEmptyStateTextView);
 
         // initiating loader for api
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -76,14 +87,15 @@ public class CartFragment extends Fragment{
         }
         else{
 
-            Toast.makeText(context,"check your internet connection",Toast.LENGTH_SHORT).show();
+            View loadingIndicator = rootView.findViewById(R.id.progressBar);
+            loadingIndicator.setVisibility(View.GONE);
+
+            mEmptyStateTextView.setText("No available internet connection");
+            mEmptyStateTextView.setTextColor(Color.parseColor("#D50000"));
+            TextView totalAmount = (TextView)rootView.findViewById(R.id.total_amount);
+            totalAmount.setText("Total : ₹ 0");
 
         }
-
-        // setting up adapter
-        adapter = new CartAdapter(getActivity(),cartItems,getLoaderManager(),rootView);
-        ListView listView = (ListView) rootView.findViewById(R.id.course_list);
-        listView.setAdapter(adapter);
 
         return rootView;
     }
@@ -118,7 +130,14 @@ public class CartFragment extends Fragment{
     };
 
     private void handleUI(){
+        View progress = rootView.findViewById(R.id.progressBar);
+        progress.setVisibility(View.GONE);
+
         extractFeatureFromJson();
+
+        if(cartItems.size() == 0){
+            mEmptyStateTextView.setText("Your Cart is Empty");
+        }
     }
 
     /**

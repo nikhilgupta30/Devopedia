@@ -42,6 +42,11 @@ public class UserDataRequest {
      * main driver function of class
      */
     public String fetchData() {     // change string to your data object
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         tokenValue = Constants.getToken();
 
