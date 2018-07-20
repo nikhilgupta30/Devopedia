@@ -26,18 +26,24 @@
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MyCourseVideo.MyCourseVideoActivity" />
+
+        <activity
+            android:name=".MyCourseVideo.MyCourseVideoActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".Preview.PreviewActivity"
             android:label="@string/title_activity_preview"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".About.AboutActivity" />
 
-        <activity android:name=".IntroSliderActivity"
+        <activity
+            android:name=".About.AboutActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".IntroSliderActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
