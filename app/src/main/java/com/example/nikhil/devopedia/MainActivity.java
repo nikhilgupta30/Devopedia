@@ -29,6 +29,7 @@ import com.example.nikhil.devopedia.About.AboutActivity;
 import com.example.nikhil.devopedia.Constants.Constants;
 import com.example.nikhil.devopedia.Fragments.CartFragment;
 import com.example.nikhil.devopedia.Fragments.CatalogFragment;
+import com.example.nikhil.devopedia.Fragments.MentorFragment;
 import com.example.nikhil.devopedia.Fragments.MyCoursesFragment;
 import com.example.nikhil.devopedia.LogIn.LoginActivity;
 
@@ -280,6 +281,12 @@ public class MainActivity extends AppCompatActivity
 
             fragmentManager.beginTransaction()
                     .replace(R.id.contentFrame, new MyCoursesFragment())
+                    .commit();
+
+        } else if (id == R.id.nav_mentor) {
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.contentFrame, new MentorFragment())
                     .commit();
 
         } else if (id == R.id.nav_share) {

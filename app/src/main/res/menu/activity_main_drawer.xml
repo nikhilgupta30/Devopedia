@@ -16,6 +16,11 @@
             android:id="@+id/nav_my_courses"
             android:icon="@drawable/ic_menu_my_courses"
             android:title="My Courses" />
+
+        <item
+            android:id="@+id/nav_mentor"
+            android:icon="@drawable/ic_mentor"
+            android:title="Your Mentors" />
     </group>
 
     <item android:title="Communicate">
