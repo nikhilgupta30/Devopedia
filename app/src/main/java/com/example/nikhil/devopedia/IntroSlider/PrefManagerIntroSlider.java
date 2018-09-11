@@ -1,4 +1,4 @@
-package com.example.nikhil.devopedia;
+package com.example.nikhil.devopedia.IntroSlider;
 
 import android.content.Context;
 import android.content.SharedPreferences;

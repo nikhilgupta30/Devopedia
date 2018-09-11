@@ -1,4 +1,4 @@
-package com.example.nikhil.devopedia;
+package com.example.nikhil.devopedia.IntroSlider;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.nikhil.devopedia.MainActivity;
+import com.example.nikhil.devopedia.R;
 
 public class IntroSliderActivity extends AppCompatActivity {
 
