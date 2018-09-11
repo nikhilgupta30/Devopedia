@@ -38,7 +38,7 @@ import java.util.ArrayList;
 public class MyCoursesFragment extends Fragment {
 
     // constants
-    public static final String REQUEST_URL_DEVOPEDIA = Constants.URL_MY_COURSES;
+    public static final String REQUEST_URL_DEVOPEDIA = Constants.URL_MENTORS;
 
     private static final int LOADER_ID = 1;
 
@@ -63,7 +63,7 @@ public class MyCoursesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_mycourses,container,false);
+        rootView = inflater.inflate(R.layout.fragment_mentor,container,false);
 
         context = getActivity();
 

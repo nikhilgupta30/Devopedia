@@ -6,6 +6,7 @@ public class Constants {
     public static final String URL_CART = "http://devopedia.herokuapp.com/api/student/cart";
     public static final String URL_CATALOG = "http://devopedia.herokuapp.com/api/student/courses";
     public static final String URL_MY_COURSES = "http://devopedia.herokuapp.com/api/student/my-courses";
+    public static final String URL_MENTORS = "http://devopedia.herokuapp.com/api/student/my-courses";
     public static final String URL_USER_AUTH = "http://devopedia.herokuapp.com/api/student/authenticate";
     public static final String URL_MY_COURSES_ITEM = "http://devopedia.herokuapp.com/api/student/course/";
     public static final String URL_BUY_COURSE = "http://devopedia.herokuapp.com/api/student/buy/";
